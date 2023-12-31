@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Design Your own Hogwarts!</title>
+    <style type="text/css">
+      
+      #mapBlock {
+        width:  320px;
+        height: 320px;
+        float: left;
+        position: relative;
+        margin-right: 40px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .blocks {
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+      }
+
+      #imagesContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .babyBlocks {
+        margin: 3px;
+        width: 32px;
+        height: 32px;
+      }
+
+      .babyMapBlocks {
+        width: 32px;
+        height: 32px;
+      }
+
+      .babyMapBlocks:hover {
+        border-color: palevioletred;
+        border-width: 4px;
+        border-style: solid;
+        box-sizing: border-box;
+      }
+
+      .selected {
+        border-color: palevioletred;
+        border-width: 4px;
+        border-style: solid;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <h1>Design Your Own Hogwarts!</h1>
+    <div id="mapBlock" class="blocks"></div>
+
+      <p>Click on a tile here to select it. Then click on the map to the left to place the tile.</p>
+      <hr>
+
+
+      <div id="imagesContainer">
+
+      </div>
+
+    <!-- load in the image array file - this makes available a new array of all image filenames that you can use for this project -->
+    <!-- Assets courtesy of Crawl Stone Soup: https://github.com/crawl/tiles -->
+    <script src="image_array.js"></script>
+    <script>
+
+      // load all possible blocks into page using for loop
+      const imagesContainer = document.getElementById('imagesContainer');
+      for (let i = 0; i < array_library.length; i++) {
+        let tmp = document.createElement('img');
+        tmp.src = array_library[i];
+        tmp.classList.add('babyBlocks');
+        tmp.classList.add('blocks');
+        imagesContainer.appendChild(tmp);
+      }
+
+      const images = document.querySelectorAll('.babyBlocks');
+      let map = document.querySelector('#mapBlock');
+      let block = '';
+
+      // create 100 divs inside the map 
+      for (let n = 0; n < 100; n++) {
+        let div = document.createElement('div');
+        div.classList.add('babyMapBlocks');
+        map.appendChild(div);
+      }
+
+      const mapBlocks = document.querySelectorAll('.babyMapBlocks');
+
+      // image should gain some sort of visual class to show that it is selected
+      for (let j = 0; j < images.length; j++) {
+        images[j].onclick = function(event) {
+          let selected = document.querySelectorAll('.selected');
+          if (selected.length) {
+            selected[0].classList.remove('selected');
+            selected[0].classList.add('blocks');
+          } 
+            images[j].classList.remove('blocks');
+            // if it has the classlist, toggle will get rid of it; if it doesnt, it will add it 
+            images[j].classList.toggle('selected');      
+            block = images[j].src;
+            
+            // if mapblock is clicked, then add selected block to mapblock
+            for (let k = 0; k < mapBlocks.length; k++) {
+              mapBlocks[k].onclick = function(event) {
+                let url = "url('" + block + "')";
+                event.currentTarget.style.backgroundImage = url;
+              }
+            }
+        }
+      }
+
+    </script>
+
+
+  </body>
+</html>
